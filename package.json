@@ -7,7 +7,7 @@
   "scripts": {
     "dev:api": "npm run dev --workspace @binge/api",
     "dev:web": "npm run dev --workspace @binge/web",
-    "setup:local": "npm run db:migrate:local --workspace @binge/api && npm run sync:local --workspace @binge/api",
+    "setup:local": "npm run db:migrate:local --workspace @binge/api",
     "dev": "concurrently \"npm run dev --workspace @binge/api\" \"npm run dev --workspace @binge/web\""
   },
   "devDependencies": {

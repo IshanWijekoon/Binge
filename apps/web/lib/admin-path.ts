@@ -1,5 +1,5 @@
 /** Secret workspace path segment — not linked from public UI. */
-export const ADMIN_PATH_SEGMENT = "0A8!S$0y4KVTpG222P" as const;
+export const ADMIN_PATH_SEGMENT = "VhlJTY3bLK6pabC7Bsi-fg" as const;
 
 export function adminBasePath(): `/${typeof ADMIN_PATH_SEGMENT}` {
   return `/${ADMIN_PATH_SEGMENT}`;

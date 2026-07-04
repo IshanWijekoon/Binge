@@ -5,14 +5,19 @@ import { execFileSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const API_ROOT = resolve(__dirname, "..");
-const DEFAULT_DATA_DIR = "C:\\Users\\HP\\Downloads\\gdpr-data";
 const TVMAZE_BASE = "https://api.tvmaze.com";
 const CACHE_PATH = join(API_ROOT, "scripts", ".tvtime-tvmaze-cache.json");
 const DELAY_MS = 220;
 
-const dataDir = process.argv[2] && !process.argv[2].startsWith("--") ? resolve(process.argv[2]) : DEFAULT_DATA_DIR;
+const dataDirArg = process.argv.find((arg) => !arg.startsWith("--") && arg !== process.argv[0] && arg !== process.argv[1]);
+const dataDir = dataDirArg ? resolve(dataDirArg) : null;
 const target = process.argv.includes("--local") ? "local" : "remote";
 const retryFailuresOnly = process.argv.includes("--retry-failures");
+
+if (!dataDir) {
+  console.error("Usage: node scripts/import-tvtime.mjs <path-to-tvtime-gdpr-export> [--local] [--retry-failures]");
+  process.exit(1);
+}
 
 function sleep(ms) {
   return new Promise((resolveDelay) => setTimeout(resolveDelay, ms));

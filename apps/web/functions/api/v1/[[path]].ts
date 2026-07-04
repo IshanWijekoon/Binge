@@ -1,4 +1,4 @@
-const API_ORIGIN = "https://binge-api.adheesharavindu001.workers.dev";
+const API_ORIGIN = "https://binge-api.ishanmadusanka.workers.dev";
 
 export const onRequest: PagesFunction = async (context) => {
   const url = new URL(context.request.url);

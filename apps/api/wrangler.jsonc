@@ -10,7 +10,7 @@
   },
   "vars": {
     "APP_ENV": "production",
-    "ALLOWED_ORIGINS": "https://binge-web.pages.dev,http://localhost:3000,http://127.0.0.1:3000",
+    "ALLOWED_ORIGINS": "https://binge.ishanmadusanka.dev,https://binge-web-d0o.pages.dev,http://localhost:3000,http://127.0.0.1:3000",
     "ADMIN_SESSION_COOKIE_NAME": "binge_admin_session",
     "ADMIN_SESSION_TTL_SECONDS": "2592000",
     "TVMAZE_BASE_URL": "https://api.tvmaze.com"
@@ -22,14 +22,14 @@
     {
       "binding": "DB",
       "database_name": "binge",
-      "database_id": "8db9bc91-16ac-4fc7-b789-7677d681dd7a",
+      "database_id": "d1ccd6df-c6e3-4efb-805a-3aa91f1a3bfb",
       "migrations_dir": "migrations"
     }
   ],
   "kv_namespaces": [
     {
       "binding": "CACHE",
-      "id": "677e4fc6530347f798edc6b55cdb7769"
+      "id": "1305c65d711d415aa76e7aca5e50bffd"
     }
   ]
 }
