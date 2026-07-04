@@ -2,10 +2,6 @@
 
 A personal TV journal to track what you're watching, what's next, and your progress across hundreds of shows.
 
-**Live demo:** [binge.adheesha.dev](https://binge.adheesha.dev/)
-
-![Binge home screen — continue watching, library, calendar, and stats](docs/screenshot.png)
-
 ## Fork and run your own
 
 This project is **open for anyone to fork, modify, and deploy as their own TV journal**. You can rebrand it, point it at your own Cloudflare account, and track your own library.
