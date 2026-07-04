@@ -318,6 +318,16 @@ export const api = {
     request<{ show: PublicShowDetail }>(`/admin/shows/${encodeURIComponent(showId)}/mark-next`, { method: "POST" }),
   adminMarkSeasonWatched: (showId: string, season: number) =>
     request<{ show: PublicShowDetail }>(`/admin/shows/${encodeURIComponent(showId)}/seasons/${season}/watched`, { method: "POST" }),
+  adminMarkSeasonsWatched: (showId: string, seasons: number[]) =>
+    request<{ show: PublicShowDetail }>(`/admin/shows/${encodeURIComponent(showId)}/seasons/batch/watched`, {
+      method: "POST",
+      body: JSON.stringify({ seasons }),
+    }),
+  adminMarkEpisodesWatched: (episodeIds: string[]) =>
+    request<{ show: PublicShowDetail }>("/admin/episodes/batch/watched", {
+      method: "POST",
+      body: JSON.stringify({ episodeIds }),
+    }),
   adminUpsertReview: (input: { showId: string; body: string; containsSpoilers?: boolean }) =>
     request<{ ok: true }>("/admin/reviews", { method: "POST", body: JSON.stringify(input) }),
   adminUpsertRating: (input: { showId: string; rating: number }) =>

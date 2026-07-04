@@ -300,6 +300,15 @@ export class JournalService {
   }
 
   async markSeasonWatched(showId: string, season: number): Promise<PublicShowDetail> {
+    return this.markSeasonsWatched(showId, [season]);
+  }
+
+  async markSeasonsWatched(showId: string, seasons: number[]): Promise<PublicShowDetail> {
+    const uniqueSeasons = [...new Set(seasons)];
+    if (!uniqueSeasons.length) {
+      throw badRequest("At least one season is required");
+    }
+
     const journalShow = await this.journal.getShow(showId);
     if (!journalShow) {
       throw notFound("Show not found");
@@ -307,22 +316,60 @@ export class JournalService {
 
     const providerShow = await this.provider.getShow(journalShow.provider_show_id);
     const providerEpisodes = await this.provider.getEpisodes(journalShow.provider_show_id);
-    const seasonEpisodes = providerEpisodes.filter((episode) => (episode.season ?? 0) === season);
 
-    if (!seasonEpisodes.length) {
-      throw badRequest(`No episodes found for season ${season}`);
-    }
+    for (const season of uniqueSeasons) {
+      const seasonEpisodes = providerEpisodes.filter((episode) => (episode.season ?? 0) === season);
+      if (!seasonEpisodes.length) {
+        throw badRequest(`No episodes found for season ${season}`);
+      }
 
-    for (const episode of seasonEpisodes) {
-      await this.journal.markEpisodeWatched({
-        show: providerShow,
-        episode,
-        runtimeMinutes: episode.runtime ?? providerShow.averageRuntime ?? providerShow.runtime ?? null,
-      });
+      for (const episode of seasonEpisodes) {
+        await this.journal.markEpisodeWatched({
+          show: providerShow,
+          episode,
+          runtimeMinutes: episode.runtime ?? providerShow.averageRuntime ?? providerShow.runtime ?? null,
+        });
+      }
     }
 
     await this.syncShowProgressFromEpisodes(journalShow.id);
     return this.getShow(journalShow.id);
+  }
+
+  async markEpisodesWatched(episodeIds: string[]): Promise<PublicShowDetail> {
+    const uniqueEpisodeIds = [...new Set(episodeIds)];
+    if (!uniqueEpisodeIds.length) {
+      throw badRequest("At least one episode is required");
+    }
+
+    let journalShowId: string | null = null;
+
+    for (const episodeId of uniqueEpisodeIds) {
+      const episode = await this.provider.getEpisode(episodeId);
+      if (!episode.showId) {
+        throw badRequest("Episode is missing show metadata");
+      }
+
+      const show = await this.provider.getShow(episode.showId);
+      const journalShow = await this.journal.getShow(show.id);
+      if (!journalShow) {
+        throw notFound("Show not found in journal");
+      }
+
+      if (journalShowId && journalShowId !== journalShow.id) {
+        throw badRequest("All episodes must belong to the same show");
+      }
+      journalShowId = journalShow.id;
+
+      await this.journal.markEpisodeWatched({
+        show,
+        episode,
+        runtimeMinutes: episode.runtime ?? show.averageRuntime ?? show.runtime ?? null,
+      });
+    }
+
+    await this.syncShowProgressFromEpisodes(journalShowId!);
+    return this.getShow(journalShowId!);
   }
 
   async upsertReview(showId: string, body: string, containsSpoilers = false): Promise<void> {

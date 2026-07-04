@@ -160,6 +160,21 @@ export class ApiRouter {
       return noContent();
     }
 
+    if (request.method === "POST" && adminShowId?.endsWith("/seasons/batch/watched")) {
+      const showId = adminShowId.replace(/\/seasons\/batch\/watched$/, "");
+      const body = await parseJson(request);
+      if (!Array.isArray(body.seasons) || !body.seasons.length) {
+        throw badRequest("seasons must be a non-empty array");
+      }
+      const seasons = body.seasons.map((season: unknown, index: number) => {
+        if (typeof season !== "number" || !Number.isInteger(season)) {
+          throw badRequest(`seasons[${index}] must be an integer`);
+        }
+        return season;
+      });
+      return json({ show: await this.journal.markSeasonsWatched(showId, seasons) });
+    }
+
     if (request.method === "POST" && adminShowId?.includes("/seasons/") && adminShowId.endsWith("/watched")) {
       const match = adminShowId.match(/^(.+)\/seasons\/(\d+)\/watched$/);
       if (!match) {
@@ -181,6 +196,15 @@ export class ApiRouter {
     }
 
     const episodeId = getPathSuffix(request, "admin/episodes");
+    if (request.method === "POST" && episodeId === "batch/watched") {
+      const body = await parseJson(request);
+      if (!Array.isArray(body.episodeIds) || !body.episodeIds.length) {
+        throw badRequest("episodeIds must be a non-empty array");
+      }
+      const episodeIds = body.episodeIds.map((id: unknown, index: number) => requireString(id, `episodeIds[${index}]`, 120));
+      return json({ show: await this.journal.markEpisodesWatched(episodeIds) });
+    }
+
     if (request.method === "POST" && episodeId?.endsWith("/watched")) {
       const body = await parseJson(request);
       const progressSeconds = body.progressSeconds === undefined ? undefined : requireInteger(body.progressSeconds, "progressSeconds");

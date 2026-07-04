@@ -55,6 +55,26 @@ export function useEpisodeMutations() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const markSeasonsWatched = useMutation({
+    mutationFn: ({ showId, seasons }: { showId: string; seasons: number[] }) => api.adminMarkSeasonsWatched(showId, seasons),
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(queryKeys.show(data.show.id), { show: data.show });
+      invalidateAll();
+      toast.success(`${variables.seasons.length} season${variables.seasons.length === 1 ? "" : "s"} marked watched`);
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
+  const markEpisodesWatched = useMutation({
+    mutationFn: (episodeIds: string[]) => api.adminMarkEpisodesWatched(episodeIds),
+    onSuccess: (data, episodeIds) => {
+      queryClient.setQueryData(queryKeys.show(data.show.id), { show: data.show });
+      invalidateAll();
+      toast.success(`${episodeIds.length} episode${episodeIds.length === 1 ? "" : "s"} marked watched`);
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   const toggleEpisode = (episodeId: string, watched: boolean) => {
     if (watched) {
       unmarkWatched.mutate(episodeId);
@@ -68,7 +88,15 @@ export function useEpisodeMutations() {
     unmarkWatched,
     markNext,
     markSeasonWatched,
+    markSeasonsWatched,
+    markEpisodesWatched,
     toggleEpisode,
-    isPending: markWatched.isPending || unmarkWatched.isPending || markNext.isPending || markSeasonWatched.isPending,
+    isPending:
+      markWatched.isPending ||
+      unmarkWatched.isPending ||
+      markNext.isPending ||
+      markSeasonWatched.isPending ||
+      markSeasonsWatched.isPending ||
+      markEpisodesWatched.isPending,
   };
 }
