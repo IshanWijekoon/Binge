@@ -1,0 +1,25 @@
+{
+  "imported": 1,
+  "failed": 2,
+  "total": 3,
+  "failures": [
+    {
+      "name": "Koombiyo - Ants",
+      "tvShowId": "338694",
+      "reason": "No TVMaze match"
+    },
+    {
+      "name": "The Fast and the Furious",
+      "tvShowId": "355375",
+      "reason": "No TVMaze match"
+    }
+  ],
+  "shows": [
+    {
+      "name": "X-Men: The Animated Series",
+      "status": "watching",
+      "tvmazeId": 472,
+      "episodesSeen": 1
+    }
+  ]
+}

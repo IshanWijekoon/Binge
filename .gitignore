@@ -1,0 +1,11 @@
+node_modules/
+.env
+.env.local
+.dev.vars
+.wrangler/
+.next/
+out/
+dist/
+cookiejar.txt
+*.tsbuildinfo
+.DS_Store

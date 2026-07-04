@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-destructive: hsl(var(--destructive));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  color-scheme: dark;
+  --background: 240 6% 4%;
+  --foreground: 0 0% 98%;
+  --card: 240 8% 10%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 8% 10%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 258 90% 66%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 239 84% 67%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 240 6% 14%;
+  --muted-foreground: 240 5% 65%;
+  --accent: 217 91% 60%;
+  --accent-foreground: 0 0% 100%;
+  --success: 142 71% 45%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --destructive: 0 84% 60%;
+  --border: 240 6% 18%;
+  --input: 240 6% 18%;
+  --ring: 258 90% 66%;
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 0%, hsl(258 90% 30% / 0.18), transparent 40rem),
+    radial-gradient(circle at 85% 10%, hsl(217 91% 40% / 0.14), transparent 35rem),
+    hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.35);
+}
+
+.card-glow {
+  box-shadow: 0 0 0 1px hsl(var(--border)), 0 8px 32px hsl(240 6% 2% / 0.5);
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 0 1px hsl(var(--primary) / 0.25), 0 12px 40px hsl(258 90% 20% / 0.15);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.35s ease-out forwards;
+}
